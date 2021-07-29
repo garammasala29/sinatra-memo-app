@@ -2,7 +2,7 @@
  Sinatraで作成したシンプルなメモアプリです。
 
 ## DEMO
-![メモアプリ](https://user-images.githubusercontent.com/69446373/127438148-e865720d-0181-43a5-9a62-d90e2f8e05a0.gif)
+![memo-app](https://user-images.githubusercontent.com/69446373/127446256-eaafe671-a256-4b9c-865a-ec9e69b45af5.gif)
 
 # Features
 
