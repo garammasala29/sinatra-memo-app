@@ -1,0 +1,14 @@
+<div class="page-header">
+  <h2 class="page-title"><%= h(@memo[:title]) %></h2>
+</div>
+<section class="memo-detail">
+  <p class="memo-contents"><%= h(@memo[:content]) %></p>
+  <div class="form-action">
+    <a href ='/memos/<%= params[:id] %>/edit' class='a-btn'>メモの編集</a>
+    <form method="post" action="/memos/<%= params[:id] %>">
+      <input type="hidden" name="_method" value="delete">
+      <input type="submit" value="削除" class='btn'>
+    </form>
+  </div>
+<a href='/memos'>メモ一覧へ戻る</a>
+</section>

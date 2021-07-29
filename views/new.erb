@@ -1,0 +1,19 @@
+<div class="page-header">
+  <h2 class="page-title">メモの新規作成</h2>
+</div>
+<section class="form-items">
+  <form action="/memos" method="post">
+    <div class="form-item">
+      <label>メモのタイトル</label>
+      <input type="text" name="title">
+    </div>
+    <div class="form-item">
+      <label>メモの内容</label>
+      <textarea name="content"></textarea>
+    </div>
+    <div class="form-action">
+      <input type="submit" value="作成" class="btn">
+    </div>
+  </form>
+  <a href='/memos'>メモ一覧へ戻る</a>
+</section>
