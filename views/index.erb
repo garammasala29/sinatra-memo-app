@@ -1,0 +1,12 @@
+<div class="page-header">
+  <h2 class="page-title">メモ一覧</h2>
+</div>
+<section class="memo-index">
+  <ul>
+    <% @memos.each do |memo| %>
+      <li class="memo-list">
+        <a href='/memos/<%= memo[:id] %>'><%= h(memo[:title]) %></a>
+      </li>
+    <% end %>
+  </ul>
+</section>

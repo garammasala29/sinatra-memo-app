@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <title>Memo</title>
+</head>
+<body>
+  <header class="header">
+    <h1>Memo</h1>
+    <div class="header-aciton">
+      <a href='/memos/new'>メモの新規作成</a>
+    </div>
+  </header>
+  <main>
+    <%= yield %>
+  </main>
+  <footer class="footer">
+    <p class="footer-text">&copy;garammasala 2021</p>
+  </footer>
+</body>
+</html>
