@@ -3,7 +3,7 @@
 </div>
 <section class="memo-detail">
   <p class="memo-contents"><%= h(@memo[:content]) %></p>
-  <div class="form-action">
+  <div class="form-contents">
     <a href ='/memos/<%= params[:id] %>/edit' class='a-btn'>メモの編集</a>
     <form method="post" action="/memos/<%= params[:id] %>">
       <input type="hidden" name="_method" value="delete">

@@ -72,6 +72,11 @@ textarea {
   text-align: right;
 }
 
+.form-contents {
+  display: flex;
+  justify-content:flex-end; 
+}
+
 .btn {
   background-color: #e9a944;
   color: white;
@@ -80,17 +85,16 @@ textarea {
   height: 40px;
   border: solid 1px #e9a944;
   border-radius: 4px;
-  display: inline-block;
 }
 
 .a-btn {
-  padding: 10px 40px;
-  margin-bottom: 10px;
+  padding: 8px 40px;
+  margin-right: 10px;
   background-color: #e9a944;
   color: white;
   font-size: 16px;
   border-radius: 4px;
-  display: inline-block;
+  
 }
 
 .footer {
