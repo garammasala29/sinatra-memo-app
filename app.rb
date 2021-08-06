@@ -5,7 +5,26 @@ require 'sinatra/reloader'
 require 'json'
 require 'pg'
 
-connection = PG.connect(dbname: 'memo_app')
+class Memo
+  def self.all
+    connection = PG.connect(dbname: 'memo_app')
+    connection.exec('SELECT * FROM memos') do |result|
+      result.each do |row|
+        row['title']
+      end
+    end
+  end
+
+  def self.create(title, content)
+    conn = PG.connect(dbname: 'memo_app')
+    conn.exec("INSERT INTO memos(title, content, created_at, updated_at)
+    VALUES ('#{title}', '#{content}', current_timestamp, current_timestamp)")
+  end
+
+  def self.delete
+  end
+
+end
 
 helpers do
   def h(text)
@@ -36,16 +55,8 @@ get '/memos' do
 end
 
 post '/memos' do
-  memo = {
-    'id' => SecureRandom.uuid,
-    'title' => params[:title].empty? ? 'タイトルなし' : params[:title],
-    'content' => params[:content],
-    'time' => Time.now
-  }
-  File.open("memos/#{memo['id']}.json", 'w') do |file|
-    JSON.dump(memo, file)
-  end
-  redirect to("/memos/#{memo['id']}")
+  Memo.create(params[:title], params[:content])
+  redirect to("/memos")
 end
 
 get '/memos/new' do
