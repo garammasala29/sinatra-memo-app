@@ -3,7 +3,9 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
-require 'securerandom'
+require 'pg'
+
+connection = PG.connect(dbname: 'memo_app')
 
 helpers do
   def h(text)
