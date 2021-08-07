@@ -2,17 +2,12 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require 'pg'
 
 class Memo
-  def self.all
-    connection = PG.connect(dbname: 'memo_app')
-    connection.exec('SELECT * FROM memos') do |result|
-      result.each do |row|
-        row['title']
-      end
-    end
+  def self.list
+    conn = PG.connect(dbname: 'memo_app')
+    conn.exec("SELECT * FROM memos")
   end
 
   def self.create(title, content)
@@ -32,11 +27,6 @@ helpers do
   end
 end
 
-def parse_data
-  json_file = "memos/#{params[:id]}.json"
-  JSON.parse(File.read(json_file), symbolize_names: true) if File.exist?(json_file)
-end
-
 not_found do
   erb :error_not_found
 end
@@ -46,11 +36,7 @@ get '/' do
 end
 
 get '/memos' do
-  files = Dir.glob('memos/*')
-  memos = files.map do |file|
-    JSON.parse(File.read(file), symbolize_names: true)
-  end
-  @memos = memos.sort_by { |file| file[:time] }
+  @memos = Memo.list
   erb :index
 end
 
