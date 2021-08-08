@@ -1,8 +1,8 @@
 <div class="page-header">
-  <h2 class="page-title"><%= h(@memo[:title]) %></h2>
+  <h2 class="page-title"><%= h(@memo[0]['title']) %></h2>
 </div>
 <section class="memo-detail">
-  <p class="memo-contents"><%= h(@memo[:content]) %></p>
+  <p class="memo-contents"><%= h(@memo[0]['content']) %></p>
   <div class="form-contents">
     <a href ='/memos/<%= params[:id] %>/edit' class='a-btn'>メモの編集</a>
     <form method="post" action="/memos/<%= params[:id] %>">

@@ -16,6 +16,11 @@ class Memo
     VALUES ('#{title}', '#{content}', current_timestamp, current_timestamp)")
   end
 
+  def self.find(id)
+    conn = PG.connect(dbname: 'memo_app')
+    conn.exec("SELECT * FROM memos WHERE id='#{id}'")
+  end
+
   def self.delete
   end
 
@@ -50,21 +55,14 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  if parse_data
-    @memo = parse_data
-    erb :show
-  else
-    erb :error_not_found
-  end
+  @memo = Memo.find(params[:id])
+  erb :show
 end
 
 get '/memos/:id/edit' do
-  if parse_data
-    @memo = parse_data
-    erb :edit
-  else
-    erb :error_not_found
-  end
+  @memo = Memo.find(params[:id])
+  erb :edit
+  # erb :error_not_found
 end
 
 patch '/memos/:id' do
