@@ -15,11 +15,11 @@ class Memo
 
   def create(title, content)
     @conn.exec("INSERT INTO memos(title, content, created_at, updated_at)
-    VALUES ('#{title}', '#{content}', current_timestamp, current_timestamp)")
+    VALUES ($1, $2, current_timestamp, current_timestamp)", [title, content])
   end
 
   def find(id)
-    @conn.exec("SELECT * FROM memos WHERE id = $1", [id])
+    @conn.exec("SELECT * FROM memos WHERE id = $1", [id]).first
   end
 
   def update(id, title, content)
@@ -63,23 +63,20 @@ end
 
 get '/memos/:id' do
   @memo = Memo.new.find(params[:id])
-  erb :show
+  @memo ? (erb :show) : (redirect to('not_found'))
 end
 
 get '/memos/:id/edit' do
   @memo = Memo.new.find(params[:id])
-  erb :edit
-  # erb :error_not_found
+  @memo ? (erb :edit) : (redirect to('not_found'))
 end
 
 patch '/memos/:id' do
-  Memo.new.update(params[:id], params[:title], params[:content])
-  redirect to("/memos/#{params[:id]}")
-  # erb :error_not_found
+  @memo = Memo.new.update(params[:id], params[:title], params[:content])
+  @memo ? (redirect to("/memos/#{params[:id]}")) : (redirect to('not_found'))
 end
 
 delete '/memos/:id' do
-  Memo.new.delete(params[:id])
-  redirect to('/memos')
-  # erb :error_not_found
+  @memo = Memo.new.delete(params[:id])
+  @memo ? (redirect to('/memos')) : (redirect to('not_found'))
 end
