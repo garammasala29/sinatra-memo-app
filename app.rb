@@ -5,30 +5,30 @@ require 'sinatra/reloader'
 require 'pg'
 
 class Memo
-  def self.list
-    conn = PG.connect(dbname: 'memo_app')
-    conn.exec("SELECT * FROM memos")
+  def initialize
+    @conn = PG.connect(dbname: 'memo_app')
   end
 
-  def self.create(title, content)
-    conn = PG.connect(dbname: 'memo_app')
-    conn.exec("INSERT INTO memos(title, content, created_at, updated_at)
+  def list
+    @conn.exec("SELECT * FROM memos")
+  end
+
+  def create(title, content)
+    @conn.exec("INSERT INTO memos(title, content, created_at, updated_at)
     VALUES ('#{title}', '#{content}', current_timestamp, current_timestamp)")
   end
 
-  def self.find(id)
-    conn = PG.connect(dbname: 'memo_app')
-    conn.exec("SELECT * FROM memos WHERE id='#{id}'")
+  def find(id)
+    @conn.exec("SELECT * FROM memos WHERE id = $1", [id])
   end
 
-  def self.update(id, title, content)
-    conn = PG.connect(dbname: 'memo_app')
-    conn.exec("UPDATE memos SET title = '#{title}', content = '#{content}', updated_at = current_timestamp WHERE id='#{id}'")
+  def update(id, title, content)
+    @conn.exec("UPDATE memos SET title = $1, content = $2, updated_at = current_timestamp WHERE id = $3",
+    [title, content, id])
   end
 
-  def self.delete(id)
-    conn = PG.connect(dbname: 'memo_app')
-    conn.exec("DELETE FROM memos WHERE id='#{id}'")
+  def delete(id)
+    @conn.exec("DELETE FROM memos WHERE id = $1", [id])
   end
 
 end
@@ -48,12 +48,12 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = Memo.list
+  @memos = Memo.new.list
   erb :index
 end
 
 post '/memos' do
-  Memo.create(params[:title], params[:content])
+  Memo.new.create(params[:title], params[:content])
   redirect to("/memos")
 end
 
@@ -62,24 +62,24 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  @memo = Memo.find(params[:id])
+  @memo = Memo.new.find(params[:id])
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @memo = Memo.find(params[:id])
+  @memo = Memo.new.find(params[:id])
   erb :edit
   # erb :error_not_found
 end
 
 patch '/memos/:id' do
-  Memo.update(params[:id], params[:title], params[:content])
+  Memo.new.update(params[:id], params[:title], params[:content])
   redirect to("/memos/#{params[:id]}")
   # erb :error_not_found
 end
 
 delete '/memos/:id' do
-  Memo.delete(params[:id])
+  Memo.new.delete(params[:id])
   redirect to('/memos')
   # erb :error_not_found
 end
