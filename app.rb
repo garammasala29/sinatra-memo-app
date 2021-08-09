@@ -21,7 +21,14 @@ class Memo
     conn.exec("SELECT * FROM memos WHERE id='#{id}'")
   end
 
-  def self.delete
+  def self.update(id, title, content)
+    conn = PG.connect(dbname: 'memo_app')
+    conn.exec("UPDATE memos SET title = '#{title}', content = '#{content}', updated_at = current_timestamp WHERE id='#{id}'")
+  end
+
+  def self.delete(id)
+    conn = PG.connect(dbname: 'memo_app')
+    conn.exec("DELETE FROM memos WHERE id='#{id}'")
   end
 
 end
@@ -66,27 +73,13 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  if parse_data
-    File.open("memos/#{params[:id]}.json", 'w') do |file|
-      memo = {
-        'id' => params[:id],
-        'title' => params[:title].empty? ? 'タイトルなし' : params[:title],
-        'content' => params[:content],
-        'time' => Time.now
-      }
-      JSON.dump(memo, file)
-    end
-    redirect to("/memos/#{params[:id]}")
-  else
-    erb :error_not_found
-  end
+  Memo.update(params[:id], params[:title], params[:content])
+  redirect to("/memos/#{params[:id]}")
+  # erb :error_not_found
 end
 
 delete '/memos/:id' do
-  if parse_data
-    File.delete("memos/#{params[:id]}.json")
-    redirect to('/memos')
-  else
-    erb :error_not_found
-  end
+  Memo.delete(params[:id])
+  redirect to('/memos')
+  # erb :error_not_found
 end
