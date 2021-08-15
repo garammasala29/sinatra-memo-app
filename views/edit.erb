@@ -5,11 +5,11 @@
   <form method="post" action="/memos/<%= params[:id] %>">
     <div class="form-item">
       <label>メモのタイトル</label>
-      <input type="text" name="title" value=<%= h(@memo[:title]) %>>
+      <input type="text" name="title" value=<%= h(@memo["title"]) %>>
     </div>
     <div class="form-item">
       <label>メモの内容</label>
-      <textarea name="content"><%= h(@memo[:content]) %></textarea>
+      <textarea name="content"><%= h(@memo["content"]) %></textarea>
     </div>
     <div class="form-action">
       <input type="hidden" name="_method" value="patch">
