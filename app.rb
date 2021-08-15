@@ -20,7 +20,7 @@ class Memo
   end
 
   def find(id)
-    @conn.exec('SELECT * FROM memos WHERE id = $1', [id]).first
+    @conn.exec('SELECT * FROM memos WHERE id = $1 LIMIT 1', [id]).first
   end
 
   def update(id, title, content)
